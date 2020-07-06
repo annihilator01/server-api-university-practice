@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "users")
 @Entity
 public class UserEntity {
@@ -41,7 +44,7 @@ public class UserEntity {
     private GenderEntity genderEntity;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Long age;
+    private Integer age;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Email
@@ -50,4 +53,9 @@ public class UserEntity {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "last_status_changed_time")
     private Long lastStatusChangedTime;
+
+    public void setStatusEntity(StatusEntity statusEntity) {
+        this.statusEntity = statusEntity;
+        lastStatusChangedTime = new Date().getTime();
+    }
 }
