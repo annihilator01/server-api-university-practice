@@ -1,6 +1,5 @@
 package com.universitypractice.springapplication.entities;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -34,23 +33,18 @@ public class UserEntity {
     @NonNull
     private String firstName;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @ManyToOne
     @JoinColumn(name = "gender_id", referencedColumnName = "id")
     private GenderEntity genderEntity;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer age;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Email
     private String email;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "last_status_changed_time")
     private Long lastStatusChangedTime;
 
