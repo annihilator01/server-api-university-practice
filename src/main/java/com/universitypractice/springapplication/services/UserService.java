@@ -34,6 +34,7 @@ public class UserService {
 
         GenderEntity genderEntity = null;
         if (userModel.getGender() != null) {
+            userModel.setGender(userModel.getGender().toLowerCase());
             genderEntity = genderService.getGenderEntityByGender(Gender.valueOf(userModel.getGender().toUpperCase()));
         }
 
@@ -46,7 +47,6 @@ public class UserService {
         userEntity = userRepository.save(userEntity);
 
         userModel.setId(userEntity.getId());
-        userModel.setGender(userModel.getGender().toLowerCase());
 
         return userModel;
     }
