@@ -9,13 +9,23 @@ public class UserModel {
     private Long id;
 
     @NonNull
-    private String userName;
+    private final String username;
 
     @NonNull
-    private String firstName;
+    private final String firstName;
 
-    private String lastName;
-    private String gender;
-    private Integer age;
-    private String email;
+    private final String lastName;
+    private final String  gender;
+    private final Integer age;
+    private final String email;
+
+    public UserModel(@NonNull String username, @NonNull String firstName, String lastName,
+                     String gender, Integer age, String email) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender.toLowerCase();
+        this.age = age;
+        this.email = email;
+    }
 }

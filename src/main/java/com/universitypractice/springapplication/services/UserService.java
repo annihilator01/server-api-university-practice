@@ -34,18 +34,20 @@ public class UserService {
 
         GenderEntity genderEntity = null;
         if (userModel.getGender() != null) {
-            userModel.setGender(userModel.getGender().toLowerCase());
             genderEntity = genderService.getGenderEntityByGender(Gender.valueOf(userModel.getGender().toUpperCase()));
         }
 
-        UserEntity userEntity = new UserEntity(offlineStatusEntity ,userModel.getUserName(), userModel.getFirstName());
-        userEntity.setLastName(userModel.getLastName());
-        userEntity.setGenderEntity(genderEntity);
-        userEntity.setAge(userModel.getAge());
-        userEntity.setEmail(userModel.getEmail());
+        UserEntity userEntity = new UserEntity(
+                offlineStatusEntity,
+                userModel.getUsername(),
+                userModel.getFirstName(),
+                userModel.getLastName(),
+                genderEntity,
+                userModel.getAge(),
+                userModel.getEmail()
+        );
 
         userEntity = userRepository.save(userEntity);
-
         userModel.setId(userEntity.getId());
 
         return userModel;
@@ -53,23 +55,20 @@ public class UserService {
 
     public UserModel getUser(Long id) {
         Optional<UserEntity> userEntityOptional = userRepository.findById(id);
+        UserEntity userEntity = userEntityOptional.orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " was not found")
+        );
 
-        UserEntity userEntity = null;
-        if (userEntityOptional.isPresent()) {
-            userEntity = userEntityOptional.get();
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " was not found");
-        }
+        Optional<String> genderOptional = Optional.of(userEntity.getGenderEntity().getGender().name().toLowerCase());
 
-        UserModel userModel = new UserModel(userEntity.getUsername(), userEntity.getFirstName());
-        userModel.setId(userEntity.getId());
-        userModel.setLastName(userEntity.getLastName());
-        userModel.setAge(userEntity.getAge());
-        userModel.setEmail(userEntity.getEmail());
-
-        if (userEntity.getGenderEntity() != null) {
-            userModel.setGender(userEntity.getGenderEntity().getGender().name().toLowerCase());
-        }
+        UserModel userModel = new UserModel(
+                userEntity.getUsername(),
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                genderOptional.get(),
+                userEntity.getAge(),
+                userEntity.getEmail()
+        );
 
         return userModel;
     }

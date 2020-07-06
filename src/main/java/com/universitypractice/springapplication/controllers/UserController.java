@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/users")
 public class UserController {
 
     private final UserService userService;
@@ -20,13 +20,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public Map<String, Long> addUser(@RequestBody UserDTO userDTO) {
-        UserModel userModel = new UserModel(userDTO.getUsername(), userDTO.getFirstName());
-        userModel.setLastName(userDTO.getLastName());
-        userModel.setGender(userDTO.getGender());
-        userModel.setAge(userDTO.getAge());
-        userModel.setEmail(userDTO.getEmail());
+        UserModel userModel = new UserModel(
+                userDTO.getUsername(),
+                userDTO.getFirstName(),
+                userDTO.getLastName(),
+                userDTO.getGender(),
+                userDTO.getAge(),
+                userDTO.getEmail()
+        );
 
         userModel = userService.addUser(userModel);
         userDTO.setId(userModel.getId());
@@ -34,16 +37,18 @@ public class UserController {
         return Collections.singletonMap("id", userDTO.getId());
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public UserDTO getUser(@PathVariable Long id) {
         UserModel userModel = userService.getUser(id);
 
-        UserDTO userDTO = new UserDTO(userModel.getUserName(), userModel.getFirstName());
-        userDTO.setId(userModel.getId());
-        userDTO.setLastName(userModel.getLastName());
-        userDTO.setGender(userModel.getGender());
-        userDTO.setAge(userModel.getAge());
-        userDTO.setEmail(userModel.getEmail());
+        UserDTO userDTO = new UserDTO(
+                userModel.getUsername(),
+                userModel.getFirstName(),
+                userModel.getLastName(),
+                userModel.getGender(),
+                userModel.getAge(),
+                userModel.getEmail()
+        );
 
         return userDTO;
     }

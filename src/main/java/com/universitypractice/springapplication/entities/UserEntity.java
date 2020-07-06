@@ -1,9 +1,6 @@
 package com.universitypractice.springapplication.entities;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -51,5 +48,16 @@ public class UserEntity {
     public void setStatusEntity(StatusEntity statusEntity) {
         this.statusEntity = statusEntity;
         lastStatusChangedTime = new Date().getTime();
+    }
+
+    public UserEntity(StatusEntity statusEntity, String username, String firstName, String lastName, GenderEntity genderEntity,
+                      Integer age, @Email String email) {
+        this.statusEntity = statusEntity;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.genderEntity = genderEntity;
+        this.age = age;
+        this.email = email;
     }
 }
