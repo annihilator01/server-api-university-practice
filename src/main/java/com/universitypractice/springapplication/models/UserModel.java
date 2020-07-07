@@ -1,9 +1,11 @@
 package com.universitypractice.springapplication.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
 @Data
+@AllArgsConstructor
 public class UserModel {
 
     private Long id;
@@ -24,7 +26,7 @@ public class UserModel {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.gender = gender.toLowerCase();
+        this.gender = (gender != null) ? gender.toLowerCase() : null;
         this.age = age;
         this.email = email;
     }

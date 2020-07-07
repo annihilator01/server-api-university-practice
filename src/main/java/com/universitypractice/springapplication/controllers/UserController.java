@@ -1,27 +1,29 @@
 package com.universitypractice.springapplication.controllers;
 
 import com.universitypractice.springapplication.dtos.UserDTO;
+import com.universitypractice.springapplication.dtos.logdtos.ChangeStatusDTO;
 import com.universitypractice.springapplication.models.UserModel;
-import com.universitypractice.springapplication.services.UserService;
+import com.universitypractice.springapplication.models.logmodels.ChangeStatusModel;
+import com.universitypractice.springapplication.services.interfaces.logging.ChangeStatusLogService;
+import com.universitypractice.springapplication.services.interfaces.operations.AGUUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/users")
 public class UserController {
 
-    private final UserService userService;
+    private final AGUUserService userService;
+    private final ChangeStatusLogService changeStatusLogService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(AGUUserService userService, ChangeStatusLogService changeStatusLogService) {
         this.userService = userService;
+        this.changeStatusLogService = changeStatusLogService;
     }
 
     @PostMapping
-    public Map<String, Long> addUser(@RequestBody UserDTO userDTO) {
+    public UserDTO addUser(@RequestBody UserDTO userDTO) {
         UserModel userModel = new UserModel(
                 userDTO.getUsername(),
                 userDTO.getFirstName(),
@@ -31,17 +33,18 @@ public class UserController {
                 userDTO.getEmail()
         );
 
-        userModel = userService.addUser(userModel);
+        userModel = userService.add(userModel);
         userDTO.setId(userModel.getId());
 
-        return Collections.singletonMap("id", userDTO.getId());
+        return userDTO;
     }
 
-    @GetMapping("/{id}")
-    public UserDTO getUser(@PathVariable Long id) {
-        UserModel userModel = userService.getUser(id);
+    @GetMapping("/{userId}")
+    public UserDTO getUser(@PathVariable Long userId) {
+        UserModel userModel = userService.get(userId);
 
         UserDTO userDTO = new UserDTO(
+                userModel.getId(),
                 userModel.getUsername(),
                 userModel.getFirstName(),
                 userModel.getLastName(),
@@ -51,5 +54,25 @@ public class UserController {
         );
 
         return userDTO;
+    }
+
+    @PatchMapping("/{userId}")
+    public ChangeStatusDTO changeStatus(@PathVariable Long userId, @RequestBody ChangeStatusDTO changeStatusDTO) {
+        ChangeStatusModel changeStatusModel = new ChangeStatusModel(
+                userId,
+                changeStatusDTO.getNewStatus()
+        );
+
+        changeStatusModel = userService.update(userId, changeStatusModel);
+        changeStatusModel = changeStatusLogService.add(changeStatusModel);
+
+        changeStatusDTO.setResponseParams(
+                changeStatusModel.getId(),
+                changeStatusModel.getUserId(),
+                changeStatusModel.getOldStatus(),
+                changeStatusModel.getStatusChangedTime()
+        );
+
+        return changeStatusDTO;
     }
 }

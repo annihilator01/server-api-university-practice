@@ -1,10 +1,14 @@
 package com.universitypractice.springapplication.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
 
     private Long id;
@@ -13,27 +17,17 @@ public class UserDTO {
     private String username;
 
     @NonNull
-    private final String firstName;
+    private String firstName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final String lastName;
+    private String lastName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final String gender;
+    private String gender;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final Integer age;
+    private Integer age;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final String email;
-
-    public UserDTO(@NonNull String username, @NonNull String firstName, String lastName,
-                   String gender, Integer age, String email) {
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.age = age;
-        this.email = email;
-    }
+    private String email;
 }
