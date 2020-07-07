@@ -1,5 +1,6 @@
 package com.universitypractice.springapplication.entities;
 
+import com.universitypractice.springapplication.entities.interfaces.JPAEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,10 +9,9 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Table(name = "users")
 @Entity
-public class UserEntity {
+public class UserEntity implements JPAEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,8 +50,8 @@ public class UserEntity {
         lastStatusChangedTime = new Date().getTime();
     }
 
-    public UserEntity(StatusEntity statusEntity, String username, String firstName, String lastName, GenderEntity genderEntity,
-                      Integer age, @Email String email) {
+    public UserEntity(StatusEntity statusEntity, String username, String firstName, String lastName,
+                      GenderEntity genderEntity, Integer age, @Email String email) {
         this.statusEntity = statusEntity;
         this.username = username;
         this.firstName = firstName;

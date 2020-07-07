@@ -1,5 +1,6 @@
 package com.universitypractice.springapplication.entities;
 
+import com.universitypractice.springapplication.entities.interfaces.JPAEntity;
 import com.universitypractice.springapplication.enums.Status;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 @Table(name = "statuses")
 @Entity
-public class StatusEntity {
+public class StatusEntity implements JPAEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
