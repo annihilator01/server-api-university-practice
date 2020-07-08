@@ -1,4 +1,4 @@
-package com.universitypractice.springapplication.dtos.logdtos;
+package com.universitypractice.springapplication.dtos.response;
 
 import com.universitypractice.springapplication.models.UserStatusesModel;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserStatusesRequestDTO {
+public class UserStatusesResponseDTO {
 
     @NonNull
     private Long requestId;

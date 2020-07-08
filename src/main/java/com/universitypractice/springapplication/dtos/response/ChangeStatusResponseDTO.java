@@ -1,19 +1,23 @@
-package com.universitypractice.springapplication.dtos.logdtos;
+package com.universitypractice.springapplication.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public class ChangeStatusDTO {
+@AllArgsConstructor
+public class ChangeStatusResponseDTO {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
 
+    @NonNull
     private Long userId;
 
+    @NonNull
     private String oldStatus;
 
     @NonNull
@@ -21,11 +25,4 @@ public class ChangeStatusDTO {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long statusChangedTime;
-
-    public void setResponseParams(Long id, Long userId, String oldStatus, Long statusChangedTime) {
-        this.id = id;
-        this.userId = userId;
-        this.oldStatus = oldStatus;
-        this.statusChangedTime = statusChangedTime;
-    }
 }

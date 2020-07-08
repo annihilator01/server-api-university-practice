@@ -1,8 +1,10 @@
 package com.universitypractice.springapplication.controllers;
 
-import com.universitypractice.springapplication.dtos.UserDTO;
-import com.universitypractice.springapplication.dtos.logdtos.ChangeStatusDTO;
-import com.universitypractice.springapplication.dtos.logdtos.UserStatusesRequestDTO;
+import com.universitypractice.springapplication.dtos.request.ChangeStatusRequestDTO;
+import com.universitypractice.springapplication.dtos.request.UserRequestDTO;
+import com.universitypractice.springapplication.dtos.response.ChangeStatusResponseDTO;
+import com.universitypractice.springapplication.dtos.response.UserResponseDTO;
+import com.universitypractice.springapplication.dtos.response.UserStatusesResponseDTO;
 import com.universitypractice.springapplication.models.UserModel;
 import com.universitypractice.springapplication.models.UserStatusesModel;
 import com.universitypractice.springapplication.models.logmodels.ChangeStatusModel;
@@ -37,29 +39,20 @@ public class UserController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Add user", response = UserDTO.class)
-    public UserDTO addUser(@RequestBody UserDTO userDTO) {
+    @ApiOperation(value = "Add user", response = UserResponseDTO.class)
+    public UserResponseDTO addUser(@RequestBody UserRequestDTO userRequestDTO) {
         UserModel userModel = new UserModel(
-                userDTO.getUsername(),
-                userDTO.getFirstName(),
-                userDTO.getLastName(),
-                userDTO.getGender(),
-                userDTO.getAge(),
-                userDTO.getEmail()
+                userRequestDTO.getUsername(),
+                userRequestDTO.getFirstName(),
+                userRequestDTO.getLastName(),
+                userRequestDTO.getGender(),
+                userRequestDTO.getAge(),
+                userRequestDTO.getEmail()
         );
 
         userModel = userService.add(userModel);
-        userDTO.setId(userModel.getId());
 
-        return userDTO;
-    }
-
-    @GetMapping("/{userId}")
-    @ApiOperation(value = "Get user by id", response = UserDTO.class)
-    public UserDTO getUser(@PathVariable Long userId) {
-        UserModel userModel = userService.get(userId);
-
-        UserDTO userDTO = new UserDTO(
+        UserResponseDTO userResponseDTO = new UserResponseDTO(
                 userModel.getId(),
                 userModel.getUsername(),
                 userModel.getFirstName(),
@@ -69,33 +62,55 @@ public class UserController {
                 userModel.getEmail()
         );
 
-        return userDTO;
+        return userResponseDTO;
+    }
+
+    @GetMapping("/{userId}")
+    @ApiOperation(value = "Get user by id", response = UserResponseDTO.class)
+    public UserResponseDTO getUser(@PathVariable Long userId) {
+        UserModel userModel = userService.get(userId);
+
+        UserResponseDTO userResponseDTO = new UserResponseDTO(
+                userModel.getId(),
+                userModel.getUsername(),
+                userModel.getFirstName(),
+                userModel.getLastName(),
+                userModel.getGender(),
+                userModel.getAge(),
+                userModel.getEmail()
+        );
+
+        return userResponseDTO;
     }
 
     @PatchMapping("/{userId}")
-    @ApiOperation(value = "Update user status", response = ChangeStatusDTO.class)
-    public ChangeStatusDTO updateStatus(@PathVariable Long userId, @RequestBody ChangeStatusDTO changeStatusDTO) {
+    @ApiOperation(value = "Update user status", response = ChangeStatusResponseDTO.class)
+    public ChangeStatusResponseDTO updateStatus(
+            @PathVariable Long userId,
+            @RequestBody ChangeStatusRequestDTO changeStatusRequestDTO
+    ) {
         ChangeStatusModel changeStatusModel = new ChangeStatusModel(
                 userId,
-                changeStatusDTO.getNewStatus()
+                changeStatusRequestDTO.getNewStatus()
         );
 
         changeStatusModel = userService.update(userId, changeStatusModel);
         changeStatusModel = changeStatusLogService.add(changeStatusModel);
 
-        changeStatusDTO.setResponseParams(
+        ChangeStatusResponseDTO changeStatusResponseDTO = new ChangeStatusResponseDTO(
                 changeStatusModel.getId(),
                 changeStatusModel.getUserId(),
                 changeStatusModel.getOldStatus(),
+                changeStatusModel.getNewStatus(),
                 changeStatusModel.getStatusChangedTime()
         );
 
-        return changeStatusDTO;
+        return changeStatusResponseDTO;
     }
 
     @GetMapping
-    @ApiOperation(value = "Get list of users filtered by status and timestamp of status change", response = UserStatusesRequestDTO.class)
-    public UserStatusesRequestDTO getUsersWithFilter(
+    @ApiOperation(value = "Get list of users filtered by status and timestamp of status change", response = UserStatusesResponseDTO.class)
+    public UserStatusesResponseDTO getUsersWithFilter(
             @RequestParam(required = false) String status,
             @RequestParam(name = "changed_after_timestamp", required = false) Long changedAfterTimestamp
     ) {
@@ -105,7 +120,7 @@ public class UserController {
 
         userStatusesRequestModel = userStatusesRequestLogService.add(userStatusesRequestModel);
 
-        UserStatusesRequestDTO userStatusesRequestDTO = new UserStatusesRequestDTO(
+        UserStatusesResponseDTO userStatusesResponseDTO = new UserStatusesResponseDTO(
                 userStatusesRequestModel.getId(),
                 userStatusesRequestModel.getRequestTimestamp(),
                 userStatusesRequestModel.getStatusFilter(),
@@ -113,6 +128,6 @@ public class UserController {
                 userStatusesModels
         );
 
-        return userStatusesRequestDTO;
+        return userStatusesResponseDTO;
     }
 }

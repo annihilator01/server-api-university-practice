@@ -68,7 +68,7 @@ public class DefaultAGUUserService implements AGUUserService {
 
         Optional<String> genderOptional = Optional.empty();
         if (userEntity.getGenderEntity() != null) {
-            genderOptional = Optional.of(userEntity.getGenderEntity().getGender().name().toLowerCase());
+            genderOptional = Optional.of(userEntity.getGenderEntity().getGender().toString());
         }
 
         UserModel userModel = new UserModel(
@@ -89,7 +89,7 @@ public class DefaultAGUUserService implements AGUUserService {
         UserEntity userEntity = getUserFromDB(id);
 
         String newStatus = changeStatusModel.getNewStatus();
-        String oldStatusFromDB = userEntity.getStatusEntity().getStatus().name().toLowerCase();
+        String oldStatusFromDB = userEntity.getStatusEntity().getStatus().toString();
 
         changeStatusModel.setOldStatus(oldStatusFromDB);
 

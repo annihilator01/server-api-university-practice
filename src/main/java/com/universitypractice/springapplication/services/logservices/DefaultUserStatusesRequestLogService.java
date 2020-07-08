@@ -57,7 +57,7 @@ public class DefaultUserStatusesRequestLogService implements UserStatusesRequest
                 userStatusesRequestRecord.getRequestTimestamp(),
 
                 (statusEntity != null)
-                        ? statusEntity.getStatus().name().toLowerCase()
+                        ? statusEntity.getStatus().toString()
                         : null,
 
                 userStatusesRequestRecord.getChangedAfterTimestamp()

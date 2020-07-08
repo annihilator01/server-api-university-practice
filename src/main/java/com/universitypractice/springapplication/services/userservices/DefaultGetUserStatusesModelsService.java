@@ -66,7 +66,7 @@ public class DefaultGetUserStatusesModelsService implements GetUserStatusesModel
                     userEntity.getId(),
                     userEntity.getUsername(),
                     userEntity.getFirstName(),
-                    userEntity.getStatusEntity().getStatus().name().toLowerCase(),
+                    userEntity.getStatusEntity().getStatus().toString(),
                     userEntity.getLastStatusChangedTime()
             );
 

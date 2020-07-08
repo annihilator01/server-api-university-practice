@@ -58,8 +58,8 @@ public class DefaultChangeStatusLogService implements ChangeStatusLogService {
         ChangeStatusModel changeStatusModel = new ChangeStatusModel(
                 changeStatusRecord.getId(),
                 changeStatusRecord.getUserEntity().getId(),
-                changeStatusRecord.getOldStatusEntity().getStatus().name().toLowerCase(),
-                changeStatusRecord.getNewStatusEntity().getStatus().name().toLowerCase(),
+                changeStatusRecord.getOldStatusEntity().getStatus().toString(),
+                changeStatusRecord.getNewStatusEntity().getStatus().toString(),
                 changeStatusRecord.getStatusChangedTime()
         );
 

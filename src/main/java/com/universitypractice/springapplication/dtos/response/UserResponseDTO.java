@@ -1,4 +1,4 @@
-package com.universitypractice.springapplication.dtos;
+package com.universitypractice.springapplication.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -9,8 +9,9 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserResponseDTO {
 
+    @NonNull
     private Long id;
 
     @NonNull

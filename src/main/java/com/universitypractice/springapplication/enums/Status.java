@@ -2,5 +2,10 @@ package com.universitypractice.springapplication.enums;
 
 public enum Status {
     ONLINE,
-    OFFLINE
+    OFFLINE;
+
+    @Override
+    public String toString() {
+        return name().toLowerCase();
+    }
 }
