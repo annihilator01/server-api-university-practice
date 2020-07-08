@@ -45,11 +45,6 @@ public class UserEntity implements JPAEntity {
     @Column(name = "last_status_changed_time")
     private Long lastStatusChangedTime;
 
-    public void setStatusEntity(StatusEntity statusEntity) {
-        this.statusEntity = statusEntity;
-        lastStatusChangedTime = new Date().getTime();
-    }
-
     public UserEntity(StatusEntity statusEntity, String username, String firstName, String lastName,
                       GenderEntity genderEntity, Integer age, @Email String email) {
         this.statusEntity = statusEntity;
@@ -59,5 +54,10 @@ public class UserEntity implements JPAEntity {
         this.genderEntity = genderEntity;
         this.age = age;
         this.email = email;
+    }
+
+    public void setStatusEntity(StatusEntity statusEntity) {
+        this.statusEntity = statusEntity;
+        lastStatusChangedTime = new Date().getTime();
     }
 }

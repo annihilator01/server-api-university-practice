@@ -1,8 +1,8 @@
-package com.universitypractice.springapplication.services;
+package com.universitypractice.springapplication.services.userservices;
 
 import com.universitypractice.springapplication.entities.UserEntity;
 import com.universitypractice.springapplication.repositories.UserRepository;
-import com.universitypractice.springapplication.services.interfaces.operations.UserEntityGettingService;
+import com.universitypractice.springapplication.services.interfaces.entityoperations.GetUserEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
@@ -13,12 +13,12 @@ import java.util.Optional;
 
 @Primary
 @Service
-public class DefaultUserEntityGettingService implements UserEntityGettingService {
+public class DefaultGetUserEntityService implements GetUserEntityService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public DefaultUserEntityGettingService(UserRepository userRepository) {
+    public DefaultGetUserEntityService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

@@ -11,6 +11,15 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<List<UserEntity>> findByStatusEntity(StatusEntity statusEntity);
+
+    Optional<List<UserEntity>> findByLastStatusChangedTimeGreaterThanEqual(Long timeStampFilter);
+
+    Optional<List<UserEntity>> findByStatusEntityAndLastStatusChangedTimeGreaterThanEqual(
+            StatusEntity statusEntity,
+            Long timestampFilter
+    );
+
     boolean existsByUsername(String username);
+
     boolean existsByEmail(String email);
 }

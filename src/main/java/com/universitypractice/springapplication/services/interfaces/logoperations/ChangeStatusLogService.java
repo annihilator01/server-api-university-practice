@@ -1,4 +1,4 @@
-package com.universitypractice.springapplication.services.interfaces.logging;
+package com.universitypractice.springapplication.services.interfaces.logoperations;
 
 import com.universitypractice.springapplication.models.logmodels.ChangeStatusModel;
 

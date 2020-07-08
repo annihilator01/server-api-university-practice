@@ -1,4 +1,4 @@
-package com.universitypractice.springapplication.services;
+package com.universitypractice.springapplication.services.userservices;
 
 import com.universitypractice.springapplication.entities.GenderEntity;
 import com.universitypractice.springapplication.entities.StatusEntity;
@@ -7,9 +7,9 @@ import com.universitypractice.springapplication.enums.Status;
 import com.universitypractice.springapplication.models.UserModel;
 import com.universitypractice.springapplication.models.logmodels.ChangeStatusModel;
 import com.universitypractice.springapplication.repositories.UserRepository;
-import com.universitypractice.springapplication.services.interfaces.operations.AGUUserService;
-import com.universitypractice.springapplication.services.interfaces.operations.GenderEntityGettingService;
-import com.universitypractice.springapplication.services.interfaces.operations.StatusEntityGettingService;
+import com.universitypractice.springapplication.services.interfaces.baseoperations.AGUUserService;
+import com.universitypractice.springapplication.services.interfaces.entityoperations.GetGenderEntityService;
+import com.universitypractice.springapplication.services.interfaces.entityoperations.GetStatusEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
@@ -24,12 +24,12 @@ public class DefaultAGUUserService implements AGUUserService {
 
     private final UserRepository userRepository;
 
-    private final StatusEntityGettingService statusService;
-    private final GenderEntityGettingService genderService;
+    private final GetStatusEntityService statusService;
+    private final GetGenderEntityService genderService;
 
     @Autowired
     public DefaultAGUUserService(UserRepository userRepository,
-                                 StatusEntityGettingService statusService, GenderEntityGettingService genderService) {
+                                 GetStatusEntityService statusService, GetGenderEntityService genderService) {
         this.userRepository = userRepository;
         this.statusService = statusService;
         this.genderService = genderService;
@@ -44,11 +44,7 @@ public class DefaultAGUUserService implements AGUUserService {
         }
 
         StatusEntity offlineStatusEntity = statusService.get(Status.OFFLINE);
-
-        GenderEntity genderEntity = null;
-        if (userModel.getGender() != null) {
-            genderEntity = genderService.getByString(userModel.getGender());
-        }
+        GenderEntity genderEntity = genderService.getByString(userModel.getGender());
 
         UserEntity userEntity = new UserEntity(
                 offlineStatusEntity,

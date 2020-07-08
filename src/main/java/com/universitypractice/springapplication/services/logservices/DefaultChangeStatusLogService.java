@@ -3,9 +3,9 @@ package com.universitypractice.springapplication.services.logservices;
 import com.universitypractice.springapplication.entities.logentities.ChangeStatusRecord;
 import com.universitypractice.springapplication.models.logmodels.ChangeStatusModel;
 import com.universitypractice.springapplication.repositories.logrepositories.ChangeStatusLogRepository;
-import com.universitypractice.springapplication.services.interfaces.logging.ChangeStatusLogService;
-import com.universitypractice.springapplication.services.interfaces.operations.StatusEntityGettingService;
-import com.universitypractice.springapplication.services.interfaces.operations.UserEntityGettingService;
+import com.universitypractice.springapplication.services.interfaces.logoperations.ChangeStatusLogService;
+import com.universitypractice.springapplication.services.interfaces.entityoperations.GetStatusEntityService;
+import com.universitypractice.springapplication.services.interfaces.entityoperations.GetUserEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ public class DefaultChangeStatusLogService implements ChangeStatusLogService {
 
     private final ChangeStatusLogRepository changeStatusLogRepository;
 
-    private final StatusEntityGettingService statusService;
-    private final UserEntityGettingService userEntityGettingService;
+    private final GetStatusEntityService statusService;
+    private final GetUserEntityService userEntityGettingService;
 
     @Autowired
     public DefaultChangeStatusLogService(ChangeStatusLogRepository changeStatusLogRepository,
-                                         StatusEntityGettingService statusService, UserEntityGettingService userEntityGettingService) {
+                                         GetStatusEntityService statusService, GetUserEntityService userEntityGettingService) {
         this.changeStatusLogRepository = changeStatusLogRepository;
         this.statusService = statusService;
         this.userEntityGettingService = userEntityGettingService;

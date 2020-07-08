@@ -21,6 +21,7 @@ public class GenderEntity implements JPAEntity {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 50)
     @NonNull
     private Gender gender;
 }
