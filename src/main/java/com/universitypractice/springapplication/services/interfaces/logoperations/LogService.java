@@ -3,6 +3,6 @@ package com.universitypractice.springapplication.services.interfaces.logoperatio
 import com.universitypractice.springapplication.services.interfaces.baseoperations.AddService;
 import com.universitypractice.springapplication.services.interfaces.baseoperations.GetService;
 
-public interface LogService<T, ID> extends AddService<T>, GetService<T, ID> {
+public interface LogService<T, F> extends AddService<T>, GetService<T, F> {
 
 }

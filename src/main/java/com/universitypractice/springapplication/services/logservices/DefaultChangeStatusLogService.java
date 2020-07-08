@@ -17,14 +17,14 @@ public class DefaultChangeStatusLogService implements ChangeStatusLogService {
     private final ChangeStatusLogRepository changeStatusLogRepository;
 
     private final GetStatusEntityService statusService;
-    private final GetUserEntityService userEntityGettingService;
+    private final GetUserEntityService getUserEntityService;
 
     @Autowired
     public DefaultChangeStatusLogService(ChangeStatusLogRepository changeStatusLogRepository,
-                                         GetStatusEntityService statusService, GetUserEntityService userEntityGettingService) {
+                                         GetStatusEntityService statusService, GetUserEntityService getUserEntityService) {
         this.changeStatusLogRepository = changeStatusLogRepository;
         this.statusService = statusService;
-        this.userEntityGettingService = userEntityGettingService;
+        this.getUserEntityService = getUserEntityService;
     }
 
 
@@ -35,7 +35,7 @@ public class DefaultChangeStatusLogService implements ChangeStatusLogService {
 
         if (!newStatus.equals(oldStatus)) {
             ChangeStatusRecord changeStatusRecord = new ChangeStatusRecord(
-                    userEntityGettingService.get(changeStatusModel.getUserId()),
+                    getUserEntityService.get(changeStatusModel.getUserId()),
                     statusService.getByString(oldStatus),
                     statusService.getByString(newStatus),
                     changeStatusModel.getStatusChangedTime()

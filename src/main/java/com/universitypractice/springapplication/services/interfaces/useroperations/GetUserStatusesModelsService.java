@@ -1,4 +1,4 @@
-package com.universitypractice.springapplication.services.interfaces;
+package com.universitypractice.springapplication.services.interfaces.useroperations;
 
 import com.universitypractice.springapplication.models.UserStatusesModel;
 import com.universitypractice.springapplication.models.logmodels.UserStatusesRequestModel;

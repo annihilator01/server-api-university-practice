@@ -7,7 +7,7 @@ import com.universitypractice.springapplication.enums.Status;
 import com.universitypractice.springapplication.models.UserModel;
 import com.universitypractice.springapplication.models.logmodels.ChangeStatusModel;
 import com.universitypractice.springapplication.repositories.UserRepository;
-import com.universitypractice.springapplication.services.interfaces.baseoperations.AGUUserService;
+import com.universitypractice.springapplication.services.interfaces.useroperations.AGUUserService;
 import com.universitypractice.springapplication.services.interfaces.entityoperations.GetGenderEntityService;
 import com.universitypractice.springapplication.services.interfaces.entityoperations.GetStatusEntityService;
 import org.springframework.beans.factory.annotation.Autowired;

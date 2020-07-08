@@ -9,8 +9,8 @@ import com.universitypractice.springapplication.models.logmodels.ChangeStatusMod
 import com.universitypractice.springapplication.models.logmodels.UserStatusesRequestModel;
 import com.universitypractice.springapplication.services.interfaces.logoperations.ChangeStatusLogService;
 import com.universitypractice.springapplication.services.interfaces.logoperations.UserStatusesRequestLogService;
-import com.universitypractice.springapplication.services.interfaces.baseoperations.AGUUserService;
-import com.universitypractice.springapplication.services.interfaces.GetUserStatusesModelsService;
+import com.universitypractice.springapplication.services.interfaces.useroperations.AGUUserService;
+import com.universitypractice.springapplication.services.interfaces.useroperations.GetUserStatusesModelsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,16 +22,16 @@ public class UserController {
 
     private final AGUUserService userService;
     private final ChangeStatusLogService changeStatusLogService;
-    private final GetUserStatusesModelsService getUserStatusesModelsService;
+    private final GetUserStatusesModelsService userStatusesModelsService;
     private final UserStatusesRequestLogService userStatusesRequestLogService;
 
     @Autowired
     public UserController(AGUUserService userService, ChangeStatusLogService changeStatusLogService,
-                          GetUserStatusesModelsService getUserStatusesModelsService,
+                          GetUserStatusesModelsService userStatusesModelsService,
                           UserStatusesRequestLogService userStatusesRequestLogService) {
         this.userService = userService;
         this.changeStatusLogService = changeStatusLogService;
-        this.getUserStatusesModelsService = getUserStatusesModelsService;
+        this.userStatusesModelsService = userStatusesModelsService;
         this.userStatusesRequestLogService = userStatusesRequestLogService;
     }
 
@@ -96,7 +96,7 @@ public class UserController {
     ) {
         UserStatusesRequestModel userStatusesRequestModel = new UserStatusesRequestModel(status, changedAfterTimestamp);
 
-        List<UserStatusesModel> userStatusesModels = getUserStatusesModelsService.get(userStatusesRequestModel);
+        List<UserStatusesModel> userStatusesModels = userStatusesModelsService.get(userStatusesRequestModel);
 
         userStatusesRequestModel = userStatusesRequestLogService.add(userStatusesRequestModel);
 

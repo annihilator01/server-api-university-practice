@@ -6,7 +6,7 @@ import com.universitypractice.springapplication.models.UserStatusesModel;
 import com.universitypractice.springapplication.models.logmodels.UserStatusesRequestModel;
 import com.universitypractice.springapplication.repositories.UserRepository;
 import com.universitypractice.springapplication.services.interfaces.entityoperations.GetStatusEntityService;
-import com.universitypractice.springapplication.services.interfaces.GetUserStatusesModelsService;
+import com.universitypractice.springapplication.services.interfaces.useroperations.GetUserStatusesModelsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
