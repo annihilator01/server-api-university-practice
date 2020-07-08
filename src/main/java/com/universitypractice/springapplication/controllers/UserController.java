@@ -11,6 +11,7 @@ import com.universitypractice.springapplication.services.interfaces.logoperation
 import com.universitypractice.springapplication.services.interfaces.logoperations.UserStatusesRequestLogService;
 import com.universitypractice.springapplication.services.interfaces.useroperations.AGUUserService;
 import com.universitypractice.springapplication.services.interfaces.useroperations.GetUserStatusesModelsService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class UserController {
     }
 
     @PostMapping
+    @ApiOperation(value = "Add user", response = UserDTO.class)
     public UserDTO addUser(@RequestBody UserDTO userDTO) {
         UserModel userModel = new UserModel(
                 userDTO.getUsername(),
@@ -53,6 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
+    @ApiOperation(value = "Get user by id", response = UserDTO.class)
     public UserDTO getUser(@PathVariable Long userId) {
         UserModel userModel = userService.get(userId);
 
@@ -70,6 +73,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
+    @ApiOperation(value = "Update user status", response = ChangeStatusDTO.class)
     public ChangeStatusDTO updateStatus(@PathVariable Long userId, @RequestBody ChangeStatusDTO changeStatusDTO) {
         ChangeStatusModel changeStatusModel = new ChangeStatusModel(
                 userId,
@@ -90,6 +94,7 @@ public class UserController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Get list of users filtered by status and timestamp of status change", response = UserStatusesRequestDTO.class)
     public UserStatusesRequestDTO getUsersWithFilter(
             @RequestParam(required = false) String status,
             @RequestParam(name = "changed_after_timestamp", required = false) Long changedAfterTimestamp
