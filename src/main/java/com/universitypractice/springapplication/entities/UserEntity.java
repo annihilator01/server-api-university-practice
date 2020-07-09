@@ -39,7 +39,7 @@ public class UserEntity implements JPAEntity {
 
     private Integer age;
 
-    @Email
+    @Email(message = "invalid email format")
     private String email;
 
     @Column(name = "last_status_changed_time")

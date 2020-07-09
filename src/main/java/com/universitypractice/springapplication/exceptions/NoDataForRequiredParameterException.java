@@ -1,7 +1,9 @@
 package com.universitypractice.springapplication.exceptions;
 
-public class NoDataForRequiredParameterException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class NoDataForRequiredParameterException extends CustomRuntimeResponseException {
     public NoDataForRequiredParameterException(String message) {
-        super(message);
+        super(HttpStatus.BAD_REQUEST, message);
     }
 }

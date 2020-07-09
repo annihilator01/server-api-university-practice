@@ -1,91 +1,36 @@
 package com.universitypractice.springapplication.controllers.advice;
 
 import com.universitypractice.springapplication.dtos.response.ApiExceptionResponseDTO;
-import com.universitypractice.springapplication.exceptions.ElementAlreadyExistsException;
-import com.universitypractice.springapplication.exceptions.ElementNotFoundException;
-import com.universitypractice.springapplication.exceptions.InvalidDataException;
-import com.universitypractice.springapplication.exceptions.NoDataForRequiredParameterException;
+import com.universitypractice.springapplication.exceptions.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 
 @ControllerAdvice
 public class BaseControllerAdviceExceptionHandler {
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = InvalidDataException.class)
-    public ApiExceptionResponseDTO handleInvalidDataException(InvalidDataException ide, HttpServletRequest request) {
-        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
-
+    @ExceptionHandler(value = CustomRuntimeResponseException.class)
+    public ResponseEntity<ApiExceptionResponseDTO> handleCustomRuntimeResponseException(CustomRuntimeResponseException crre,
+                                                                                        HttpServletRequest request) {
         ApiExceptionResponseDTO apiExceptionResponseDTO = new ApiExceptionResponseDTO(
                 ZonedDateTime.now(ZoneId.of("GMT")),
-                badRequest.value(),
-                badRequest.getReasonPhrase(),
-                ide.getMessage(),
+                crre.getHttpStatus().value(),
+                crre.getHttpStatus().getReasonPhrase(),
+                crre.getMessage(),
                 request.getRequestURI()
         );
 
-        return apiExceptionResponseDTO;
-    }
-
-    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = NoDataForRequiredParameterException.class)
-    public ApiExceptionResponseDTO handleNoDataForRequiredParameterException(NoDataForRequiredParameterException ndfrpe,
-                                                                                             HttpServletRequest request) {
-        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
-
-        ApiExceptionResponseDTO apiExceptionResponseDTO = new ApiExceptionResponseDTO(
-                ZonedDateTime.now(ZoneId.of("GMT")),
-                badRequest.value(),
-                badRequest.getReasonPhrase(),
-                ndfrpe.getMessage(),
-                request.getRequestURI()
-        );
-
-        return apiExceptionResponseDTO;
-    }
-
-    @ResponseBody
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = ElementNotFoundException.class)
-    public ApiExceptionResponseDTO handleElementNotFoundException(ElementNotFoundException enfe, HttpServletRequest request) {
-        HttpStatus notFound = HttpStatus.NOT_FOUND;
-
-        ApiExceptionResponseDTO apiExceptionResponseDTO = new ApiExceptionResponseDTO(
-                ZonedDateTime.now(ZoneId.of("GMT")),
-                notFound.value(),
-                notFound.getReasonPhrase(),
-                enfe.getMessage(),
-                request.getRequestURI()
-        );
-
-        return apiExceptionResponseDTO;
-    }
-
-    @ResponseBody
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(value = ElementAlreadyExistsException.class)
-    public ApiExceptionResponseDTO handleElementAlreadyExistsException(ElementAlreadyExistsException eae, HttpServletRequest request) {
-        HttpStatus conflict = HttpStatus.CONFLICT;
-
-        ApiExceptionResponseDTO apiExceptionResponseDTO = new ApiExceptionResponseDTO(
-                ZonedDateTime.now(ZoneId.of("GMT")),
-                conflict.value(),
-                conflict.getReasonPhrase(),
-                eae.getMessage(),
-                request.getRequestURI()
-        );
-
-        return apiExceptionResponseDTO;
+        return new ResponseEntity<>(apiExceptionResponseDTO, crre.getHttpStatus());
     }
 
     @ResponseBody
@@ -94,11 +39,13 @@ public class BaseControllerAdviceExceptionHandler {
     public ApiExceptionResponseDTO handleConstraintViolationException(ConstraintViolationException cve, HttpServletRequest request) {
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
+        String exceptionMessage = new ArrayList<>(cve.getConstraintViolations()).get(0).getMessage();
+
         ApiExceptionResponseDTO apiExceptionResponseDTO = new ApiExceptionResponseDTO(
                 ZonedDateTime.now(ZoneId.of("GMT")),
                 badRequest.value(),
                 badRequest.getReasonPhrase(),
-                cve.getMessage(),
+                exceptionMessage,
                 request.getRequestURI()
         );
 

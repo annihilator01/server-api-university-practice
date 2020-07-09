@@ -1,7 +1,9 @@
 package com.universitypractice.springapplication.exceptions;
 
-public class InvalidDataException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class InvalidDataException extends CustomRuntimeResponseException {
     public InvalidDataException(String message) {
-        super(message);
+        super(HttpStatus.BAD_REQUEST, message);
     }
 }

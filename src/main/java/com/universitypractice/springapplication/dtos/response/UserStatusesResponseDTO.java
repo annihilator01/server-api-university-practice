@@ -24,5 +24,5 @@ public class UserStatusesResponseDTO {
     private Long changedAfterTimestamp;
 
     @NonNull
-    private List<UserStatusesModel> userStatusesModels;
+    private List<UserStatusesModel> userStatuses;
 }

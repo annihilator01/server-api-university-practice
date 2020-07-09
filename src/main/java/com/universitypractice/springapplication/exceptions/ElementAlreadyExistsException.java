@@ -1,7 +1,9 @@
 package com.universitypractice.springapplication.exceptions;
 
-public class ElementAlreadyExistsException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class ElementAlreadyExistsException extends CustomRuntimeResponseException {
     public ElementAlreadyExistsException(String message) {
-        super(message);
+        super(HttpStatus.CONFLICT, message);
     }
 }

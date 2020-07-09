@@ -1,7 +1,9 @@
 package com.universitypractice.springapplication.exceptions;
 
-public class ElementNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class ElementNotFoundException extends CustomRuntimeResponseException {
     public ElementNotFoundException(String message) {
-        super(message);
+        super(HttpStatus.NOT_FOUND, message);
     }
 }
