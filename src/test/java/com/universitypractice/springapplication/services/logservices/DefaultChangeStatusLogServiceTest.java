@@ -1,7 +1,10 @@
 package com.universitypractice.springapplication.services.logservices;
 
+import com.universitypractice.springapplication.entities.StatusEntity;
 import com.universitypractice.springapplication.entities.logentities.ChangeStatusRecord;
+import com.universitypractice.springapplication.enums.Status;
 import com.universitypractice.springapplication.models.logmodels.ChangeStatusModel;
+import com.universitypractice.springapplication.repositories.StatusRepository;
 import com.universitypractice.springapplication.repositories.logrepositories.ChangeStatusLogRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,12 +25,28 @@ class DefaultChangeStatusLogServiceTest {
     private ChangeStatusLogRepository changeStatusLogRepository;
 
     @MockBean
+    private StatusRepository statusRepository;
+
+    @MockBean
     private ChangeStatusRecord changeStatusRecord;
+
+    @MockBean
+    private StatusEntity statusEntity;
 
     @BeforeEach
     void mockChangeStatusLogRepositoryMethods() {
         Mockito.when(changeStatusLogRepository.save(ArgumentMatchers.any(ChangeStatusRecord.class)))
                 .thenReturn(changeStatusRecord);
+    }
+
+    @BeforeEach
+    void mockStatusRepositoryMethods() {
+        Mockito.when(statusRepository.getByStatus(ArgumentMatchers.any(Status.class))).thenReturn(statusEntity);
+    }
+
+    @BeforeEach
+    void mockStatusEntityMethods() {
+        Mockito.when(statusEntity.getStatus()).thenReturn(Status.OFFLINE);
     }
 
     @BeforeEach

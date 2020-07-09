@@ -1,7 +1,9 @@
 package com.universitypractice.springapplication.services.userservices;
 
+import com.universitypractice.springapplication.entities.GenderEntity;
 import com.universitypractice.springapplication.entities.StatusEntity;
 import com.universitypractice.springapplication.entities.UserEntity;
+import com.universitypractice.springapplication.enums.Gender;
 import com.universitypractice.springapplication.enums.Status;
 import com.universitypractice.springapplication.exceptions.ElementAlreadyExistsException;
 import com.universitypractice.springapplication.exceptions.ElementNotFoundException;
@@ -9,6 +11,8 @@ import com.universitypractice.springapplication.exceptions.InvalidDataException;
 import com.universitypractice.springapplication.exceptions.NoDataForRequiredParameterException;
 import com.universitypractice.springapplication.models.UserModel;
 import com.universitypractice.springapplication.models.logmodels.ChangeStatusModel;
+import com.universitypractice.springapplication.repositories.GenderRepository;
+import com.universitypractice.springapplication.repositories.StatusRepository;
 import com.universitypractice.springapplication.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +35,16 @@ class DefaultAGUUserServiceTest {
     private UserRepository userRepository;
 
     @MockBean
+    private StatusRepository statusRepository;
+
+    @MockBean
+    private GenderRepository genderRepository;
+
+    @MockBean
     private UserEntity userEntity;
+
+    @MockBean
+    private GenderEntity genderEntity;
 
     @MockBean
     private StatusEntity statusEntity;
@@ -44,13 +57,23 @@ class DefaultAGUUserServiceTest {
     }
 
     @BeforeEach
+    void mockGenderRepositoryMethods() {
+        Mockito.when(genderRepository.getByGender(ArgumentMatchers.any(Gender.class))).thenReturn(genderEntity);
+    }
+
+    @BeforeEach
+    void mockStatusRepositoryMethods() {
+        Mockito.when(statusRepository.getByStatus(ArgumentMatchers.any(Status.class))).thenReturn(statusEntity);
+    }
+
+    @BeforeEach
     void mockUserEntityMethods() {
         Mockito.when(userEntity.getId()).thenReturn(1L);
     }
 
     @BeforeEach
     void mockStatusEntityMethods() {
-        Mockito.when(statusEntity.getStatus()).thenReturn(Status.ONLINE);
+        Mockito.when(statusEntity.getStatus()).thenReturn(Status.OFFLINE);
     }
 
     @Test
@@ -75,7 +98,7 @@ class DefaultAGUUserServiceTest {
     }
 
     @Test
-    void whenAddingUser_IncorrectGenderName_ThrowInvalidDataException() {
+    void whenAddingUser_NonExistentGender_ThrowInvalidDataException() {
         UserModel userModel = new UserModel(
                 "john_username",
                 "John",
@@ -130,7 +153,7 @@ class DefaultAGUUserServiceTest {
     }
 
     @Test
-    void whenUpdatingUser_NoStatus_ThrowNoDataForRequiredParameterException() {
+    void whenUpdatingUser_NoStatusProvided_ThrowNoDataForRequiredParameterException() {
         ChangeStatusModel changeStatusModel = new ChangeStatusModel(1L, null);
 
         Mockito.when(userRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(userEntity));
@@ -151,7 +174,7 @@ class DefaultAGUUserServiceTest {
 
     @Test
     void whenUpdatingUser_PreviousStatus_ReturnChangeStatusModelWithoutStatusChangedTime() {
-        ChangeStatusModel changeStatusModel = new ChangeStatusModel(1L, "online");
+        ChangeStatusModel changeStatusModel = new ChangeStatusModel(1L, "offline");
 
         Mockito.when(userRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(userEntity));
         Mockito.when(userEntity.getStatusEntity()).thenReturn(statusEntity);
