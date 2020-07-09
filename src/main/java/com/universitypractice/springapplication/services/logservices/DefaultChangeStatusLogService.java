@@ -1,6 +1,7 @@
 package com.universitypractice.springapplication.services.logservices;
 
 import com.universitypractice.springapplication.entities.logentities.ChangeStatusRecord;
+import com.universitypractice.springapplication.exceptions.ElementNotFoundException;
 import com.universitypractice.springapplication.models.logmodels.ChangeStatusModel;
 import com.universitypractice.springapplication.repositories.logrepositories.ChangeStatusLogRepository;
 import com.universitypractice.springapplication.services.interfaces.logoperations.ChangeStatusLogService;
@@ -52,7 +53,7 @@ public class DefaultChangeStatusLogService implements ChangeStatusLogService {
     @Override
     public ChangeStatusModel get(Long id) {
         ChangeStatusRecord changeStatusRecord = changeStatusLogRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Change status record with id \"" + id + "\" was not found")
+                () -> new ElementNotFoundException("change status record with id '" + id + "' was not found")
         );
 
         ChangeStatusModel changeStatusModel = new ChangeStatusModel(

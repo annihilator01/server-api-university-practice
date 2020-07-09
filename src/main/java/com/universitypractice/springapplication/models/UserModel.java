@@ -10,10 +10,8 @@ public class UserModel {
 
     private Long id;
 
-    @NonNull
     private final String username;
 
-    @NonNull
     private final String firstName;
 
     private final String lastName;
@@ -21,7 +19,7 @@ public class UserModel {
     private final Integer age;
     private final String email;
 
-    public UserModel(@NonNull String username, @NonNull String firstName, String lastName,
+    public UserModel(String username, String firstName, String lastName,
                      String gender, Integer age, String email) {
         this.username = username;
         this.firstName = firstName;

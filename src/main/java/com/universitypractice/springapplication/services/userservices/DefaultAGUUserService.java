@@ -4,17 +4,18 @@ import com.universitypractice.springapplication.entities.GenderEntity;
 import com.universitypractice.springapplication.entities.StatusEntity;
 import com.universitypractice.springapplication.entities.UserEntity;
 import com.universitypractice.springapplication.enums.Status;
+import com.universitypractice.springapplication.exceptions.ElementAlreadyExistsException;
+import com.universitypractice.springapplication.exceptions.ElementNotFoundException;
+import com.universitypractice.springapplication.exceptions.NoDataForRequiredParameterException;
 import com.universitypractice.springapplication.models.UserModel;
 import com.universitypractice.springapplication.models.logmodels.ChangeStatusModel;
 import com.universitypractice.springapplication.repositories.UserRepository;
-import com.universitypractice.springapplication.services.interfaces.useroperations.AGUUserService;
 import com.universitypractice.springapplication.services.interfaces.entityoperations.GetGenderEntityService;
 import com.universitypractice.springapplication.services.interfaces.entityoperations.GetStatusEntityService;
+import com.universitypractice.springapplication.services.interfaces.useroperations.AGUUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -37,10 +38,18 @@ public class DefaultAGUUserService implements AGUUserService {
 
     @Override
     public UserModel add(UserModel userModel) {
+        if (userModel.getUsername() == null) {
+            throw new NoDataForRequiredParameterException("username is required parameter");
+        }
+
+        if (userModel.getFirstName() == null) {
+            throw new NoDataForRequiredParameterException("first name is required parameter");
+        }
+
         if (userRepository.existsByUsername(userModel.getUsername())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with username \"" + userModel.getUsername() + "\" already exists");
+            throw new ElementAlreadyExistsException("user with username '" + userModel.getUsername() + "' already exists");
         } else if (userModel.getEmail() != null && userRepository.existsByEmail(userModel.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with email \"" + userModel.getEmail() + "\" already exists");
+            throw new ElementAlreadyExistsException("user with email '" + userModel.getEmail() + "' already exists");
         }
 
         StatusEntity offlineStatusEntity = statusService.get(Status.OFFLINE);
@@ -95,6 +104,10 @@ public class DefaultAGUUserService implements AGUUserService {
 
         if (!newStatus.equals(oldStatusFromDB)) {
             StatusEntity newStatusEntity = statusService.getByString(newStatus);
+            if (newStatusEntity == null) {
+                throw new NoDataForRequiredParameterException("new status is required parameter");
+            }
+
             userEntity.setStatusEntity(newStatusEntity);
             changeStatusModel.setStatusChangedTime(userEntity.getLastStatusChangedTime());
 
@@ -107,7 +120,7 @@ public class DefaultAGUUserService implements AGUUserService {
     private UserEntity getUserFromDB(Long id) {
         Optional<UserEntity> userEntityOptional = userRepository.findById(id);
         UserEntity userEntity = userEntityOptional.orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id \"" + id + "\" was not found")
+                () -> new ElementNotFoundException("user with id '" + id + "' was not found")
         );
 
         return userEntity;

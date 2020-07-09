@@ -2,6 +2,7 @@ package com.universitypractice.springapplication.services;
 
 import com.universitypractice.springapplication.entities.StatusEntity;
 import com.universitypractice.springapplication.enums.Status;
+import com.universitypractice.springapplication.exceptions.InvalidDataException;
 import com.universitypractice.springapplication.repositories.StatusRepository;
 import com.universitypractice.springapplication.services.interfaces.entityoperations.GetStatusEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,17 @@ public class DefaultStatusService implements GetStatusEntityService {
 
     @Override
     public StatusEntity getByString(String status) {
-        return (status != null)
-                ? statusRepository.getByStatus(Status.valueOf(status.toUpperCase()))
-                : null;
+        if (status == null) {
+            return null;
+        }
+
+        StatusEntity statusEntity;
+        try {
+            statusEntity = statusRepository.getByStatus(Status.valueOf(status.toUpperCase()));
+        } catch (IllegalArgumentException ignored) {
+            throw new InvalidDataException("status '" + status + "' doesn't exist");
+        }
+
+        return statusEntity;
     }
 }

@@ -10,12 +10,10 @@ public class ChangeStatusModel {
 
     private Long id;
 
-    @NonNull
     private Long userId;
 
     private String oldStatus;
 
-    @NonNull
     private final String newStatus;
 
     private Long statusChangedTime;
