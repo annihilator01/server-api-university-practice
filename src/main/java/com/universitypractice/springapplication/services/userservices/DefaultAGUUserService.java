@@ -102,7 +102,7 @@ public class DefaultAGUUserService implements AGUUserService {
 
         changeStatusModel.setOldStatus(oldStatusFromDB);
 
-        if (!newStatus.equals(oldStatusFromDB)) {
+        if (!oldStatusFromDB.equals(newStatus)) {
             StatusEntity newStatusEntity = statusService.getByString(newStatus);
             if (newStatusEntity == null) {
                 throw new NoDataForRequiredParameterException("new status is required parameter");

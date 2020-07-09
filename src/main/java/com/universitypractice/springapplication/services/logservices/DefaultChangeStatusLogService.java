@@ -4,13 +4,13 @@ import com.universitypractice.springapplication.entities.logentities.ChangeStatu
 import com.universitypractice.springapplication.exceptions.ElementNotFoundException;
 import com.universitypractice.springapplication.models.logmodels.ChangeStatusModel;
 import com.universitypractice.springapplication.repositories.logrepositories.ChangeStatusLogRepository;
-import com.universitypractice.springapplication.services.interfaces.logoperations.ChangeStatusLogService;
 import com.universitypractice.springapplication.services.interfaces.entityoperations.GetStatusEntityService;
 import com.universitypractice.springapplication.services.interfaces.entityoperations.GetUserEntityService;
+import com.universitypractice.springapplication.services.interfaces.logoperations.ChangeStatusLogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
 
 @Service
 public class DefaultChangeStatusLogService implements ChangeStatusLogService {
@@ -34,7 +34,7 @@ public class DefaultChangeStatusLogService implements ChangeStatusLogService {
         String oldStatus = changeStatusModel.getOldStatus();
         String newStatus = changeStatusModel.getNewStatus();
 
-        if (!newStatus.equals(oldStatus)) {
+        if (!Objects.equals(newStatus, oldStatus)) {
             ChangeStatusRecord changeStatusRecord = new ChangeStatusRecord(
                     getUserEntityService.get(changeStatusModel.getUserId()),
                     statusService.getByString(oldStatus),
